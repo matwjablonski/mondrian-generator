@@ -15,9 +15,25 @@ body {
 }
 
 .generator {
-  right: 5%;
+  background: rgba(getColor(--white), 0.6);
+  display: flex;
+  font-family: sans-serif;
+  right: 1em;
+  padding: 1em;
   position: fixed;
-  top: 5%;
+  top: 1em;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.2em;
+  }
+
+  input {
+    border: 0;
+    padding: 0.5em;
+    margin-top: 1em;
+  }
 }
 
 .canvas {
