@@ -6,7 +6,7 @@
 
 [Piet Mondrian](https://en.wikipedia.org/wiki/Piet_Mondrian) is a painter. He is known for being one of the pioneers of 20th century abstract art.
 
-![Composition II in Red, Blue, and Yellow, 1930](https://en.wikipedia.org/wiki/Piet_Mondrian#/media/File:Piet_Mondriaan,_1930_-_Mondrian_Composition_II_in_Red,_Blue,_and_Yellow.jpg)
+![Composition II in Red, Blue, and Yellow, 1930](https://upload.wikimedia.org/wikipedia/commons/a/a4/Piet_Mondriaan%2C_1930_-_Mondrian_Composition_II_in_Red%2C_Blue%2C_and_Yellow.jpg)
 
 ## About this app
 
