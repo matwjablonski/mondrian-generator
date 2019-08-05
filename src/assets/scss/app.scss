@@ -38,7 +38,6 @@ body {
 
 .canvas {
   background: getColor(--black);
-  border: 0.6em solid getColor(--black);
   display: grid;
   grid-gap: 0.6em;
   grid: {
