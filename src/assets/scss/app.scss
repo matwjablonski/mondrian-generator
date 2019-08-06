@@ -38,9 +38,8 @@ body {
 
 .canvas {
   background: getColor(--black);
-  border: 0.6em solid getColor(--black);
   display: grid;
-  grid-gap: 0.6em;
+  grid-gap: 0.4em;
   grid: {
     template: {
       columns: repeat(3, 1fr);
