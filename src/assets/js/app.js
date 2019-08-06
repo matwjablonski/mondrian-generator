@@ -323,11 +323,6 @@
       }
 
       findPlace(sortedFields);
-
-      console.log('sortedFields', sortedFields);
-
-      // console.log(convertAreaMapToString());
-      // console.log(areaMap);
       canvas.style.gridTemplateAreas = convertAreaMapToString();
     } catch (e) {
       console.error('Error', e);
