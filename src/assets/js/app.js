@@ -19,6 +19,8 @@
   let lastRandom = getRandomMax(Math.ceil(rows * columns * 0.8));
   let boxes = rows * columns - lastRandom;
 
+  let placeFound = true;
+
   const randomAmountOfColorizedBoxes = function() {
     const percentage = Math.ceil(Math.random() * 100);
     const boxesToColorize = Math.ceil((boxes * percentage) / 100);
@@ -70,6 +72,16 @@
     return possibleAreas.concat(duplicatesAreas);
   };
 
+  const createArrayFromNum = function(num) {
+    const arr = [];
+
+    for (let i = 0; i < num; i++) {
+      arr.push(i);
+    }
+
+    return arr;
+  };
+
   const groupByArea = function(areasArray) {
     return areasArray.reduce(function(acc, curr) {
       (acc[curr] = acc[curr] || []).push(curr);
@@ -103,26 +115,6 @@
     return availableShapes[getRandomMax(availableShapes.length)];
   };
 
-  // const calcAreaShape = function(size) {
-  //   if (size > columns && size > rows && size % 2 === 0) {
-  //     return 'double';
-  //   }
-
-  //   if (size % 2 === 0 && size > 2) {
-  //     return 'square';
-  //   }
-
-  //   if (size > columns && size <= rows) {
-  //     return 'verticalLine';
-  //   }
-
-  //   if (size <= columns) {
-  //     return 'horizontalLine';
-  //   }
-
-  //   return 'dot';
-  // };
-
   const findEmptySquare = function(area) {
     const possibleChoices = [];
 
@@ -152,20 +144,15 @@
       areaMap[line[0]][line[1]] = area.items[0];
       areaMap[line[0]][line[2]] = area.items[0];
     }
-  };
-
-  const findEmptyDouble = function(area) {
-    console.log('double', area.length);
+    if (choice) {
+      placeFound = true;
+    }
   };
 
   const findEmptyHorizontalLine = function(area) {
     const possibleChoices = [];
     const lineLength = area.length;
-    const colIndexes = [];
-
-    for (let i = 0; i < lineLength; i++) {
-      colIndexes.push(i);
-    }
+    const colIndexes = createArrayFromNum(lineLength);
 
     areaMap.forEach(function(row, rowIndex) {
       const testedLine = [];
@@ -188,37 +175,39 @@
       choice.testedLine.forEach(function(colIndex) {
         areaMap[choice.rowIndex][colIndex] = area.items[0];
       });
-
-    // console.log('choice', choice);
-    // const calcResult = areaMap[index].indexOf('.') === -1;
-
-    // if (calcResult) {
-    //   findPlaceInMapForArea(area);
-    // } else {
-    //   area.items.forEach(function(areaItem, areaIndex) {
-    //     areaMap[index][areaIndex] = areaItem;
-    //   });
-    // }
-
-    // console.log('findEmptyHorizontalLine', map);
+    if (choice) {
+      placeFound = true;
+    }
   };
 
-  const findEmptyVerticalLine = function(area, index) {
-    const calcResult = areaMap.map(function(mapItem) {
-      return mapItem[index] === '.';
+  const findEmptyVerticalLine = function(area) {
+    const possibleChoices = [];
+    const lineLength = area.length;
+    const rowIndexes = createArrayFromNum(lineLength);
+    const columnsArr = createArrayFromNum(columns);
+    const regex = new RegExp(`^(\.){${lineLength}}$`, 'g');
+
+    areaMap.forEach(function(row, rowIndex) {
+      columnsArr.forEach(function(columnIndex) {
+        const testedLine = [];
+        rowIndexes.forEach(function(index) {
+          testedLine.push(areaMap[index][columnIndex]);
+        });
+        if (regex.test(testedLine.join(''))) {
+          possibleChoices.push({ rowIndex, columnIndex });
+        }
+      });
     });
 
-    if (calcResult.indexOf(false) === -1) {
-      areaMap.forEach(function(mapItem, mapIndex) {
-        area.items.forEach(function(a, areaIndex) {
-          mapItem[index] = a;
-        });
-      });
-    } else {
-      findPlaceInMapForArea(area);
-    }
-
-    // console.log('findEmptyVerticalLine', map);
+    const choice = possibleChoices[getRandomMax(possibleChoices.length)];
+    rowIndexes.forEach(function(rowIndex) {
+      if (choice) {
+        areaMap[rowIndex][choice.columnIndex] = area.items[0];
+        placeFound = true;
+      } else {
+        placeFound = false;
+      }
+    });
   };
 
   const findEmptyPlaceForDot = function(area) {
@@ -233,34 +222,47 @@
     });
 
     const choice = possibleChoices[getRandomMax(possibleChoices.length)];
-
+    if (choice) {
+      placeFound = true;
+    }
     areaMap[choice.rowIndex][choice.colIndex] = area.items[0];
   };
 
   const findPlaceInMapForArea = function(area) {
     const areaShape = randomShape();
-
-    switch (areaShape) {
-      case 'square':
-        area.length % 2 === 0 && area.length > 2
-          ? findEmptySquare(area)
-          : findPlaceInMapForArea(area);
-        break;
-      case 'horizontalLine':
-        area.length <= columns && area.length > 1
-          ? findEmptyHorizontalLine(area)
-          : findPlaceInMapForArea(area);
-        break;
-      default:
-        area.length === 1 && findEmptyPlaceForDot(area);
+    placeFound = false;
+    if (area.length % 2 === 0 && area.length > 2 && areaShape === 'square') {
+      return findEmptySquare(area);
     }
-    // const rowIndex = getRandomMax(rows);
-    // console.log(map, area);
+
+    if (
+      area.length <= columns &&
+      area.length > 1 &&
+      areaShape === 'horizontalLine'
+    ) {
+      return findEmptyHorizontalLine(area);
+    }
+
+    if (
+      area.length > 1 &&
+      area.length <= rows &&
+      areaShape === 'verticalLine'
+    ) {
+      return findEmptyVerticalLine(area);
+    }
+
+    if (area.length === 1) {
+      return findEmptyPlaceForDot(area);
+    }
+
+    return findPlaceInMapForArea(area);
   };
 
   const findPlace = function(sortedFields) {
     findPlaceInMapForArea(sortedFields[sortedFields.length - 1]);
-    sortedFields.pop();
+    if (placeFound) {
+      sortedFields.pop();
+    }
     if (sortedFields.length > 0) {
       findPlace(sortedFields);
     }
@@ -297,18 +299,10 @@
 
     findPlace(sortedFields);
 
-    console.log(convertAreaMapToString());
+    console.log('sortedFields', sortedFields);
 
+    // console.log(convertAreaMapToString());
     // console.log(areaMap);
-    // areas
-    //   .map(function(arr) {
-    //     return arr.join(' ');
-    //   })
-    //   .forEach(function(line, index) {
-    //     a += `"${line}"`;
-    //   });
-
-    console.log(areaMap);
     canvas.style.gridTemplateAreas = convertAreaMapToString();
   };
 
