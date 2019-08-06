@@ -33,7 +33,12 @@
 
   const clearCanvas = function() {
     canvas.innerHTML = '';
+    canvas.style.gridTemplateAreas = null;
   };
+
+  const showUppsMessage = function () {
+    canvas.innerHTML = '<div class="ups">Upps, my paintbrush broke. Reload to continue painting...</div>'
+  }
 
   const createBoxes = function() {
     clearCanvas();
@@ -288,9 +293,9 @@
         findPlace(sortedFields);
       }
     } catch (e) {
+      clearCanvas();
+      showUppsMessage();
       console.error('Error', e);
-    } finally {
-      createNewPainting();
     }
   };
 
