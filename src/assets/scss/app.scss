@@ -47,10 +47,27 @@ body {
     }
   }
   height: $canvas-height;
+  position: relative;
   width: $canvas-width;
 
   div {
     background: getColor(--white);
+  }
+
+  .ups {
+    background: transparent;
+    bottom: 0;
+    color: getColor(--white);
+    font: {
+      family: sans-serif;
+      size: 1.2em;
+    }
+    height: 1.2em;
+    margin: auto;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 100%;
   }
 
   @each $color, $name in $colors {

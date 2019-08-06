@@ -149,7 +149,6 @@
         placeFound = true;
       }
     } catch (e) {
-      createNewPainting();
       console.error('Error', e);
     }
   };
@@ -185,7 +184,6 @@
         placeFound = true;
       }
     } catch (e) {
-      createNewPainting();
       console.error('Error', e);
     }
   };
@@ -220,7 +218,6 @@
         }
       });
     } catch (e) {
-      createNewPainting();
       console.error('Error', e);
     }
   };
@@ -243,7 +240,6 @@
       }
       areaMap[choice.rowIndex][choice.colIndex] = area.items[0];
     } catch (e) {
-      createNewPainting();
       console.error('Error', e);
     }
   };
@@ -278,7 +274,6 @@
 
       return findPlaceInMapForArea(area);
     } catch (e) {
-      createNewPainting();
       console.error('Error', e);
     }
   };
@@ -293,8 +288,9 @@
         findPlace(sortedFields);
       }
     } catch (e) {
-      createNewPainting();
       console.error('Error', e);
+    } finally {
+      createNewPainting();
     }
   };
 
@@ -331,7 +327,6 @@
       findPlace(sortedFields);
       canvas.style.gridTemplateAreas = convertAreaMapToString();
     } catch (e) {
-      createNewPainting();
       console.error('Error', e);
     }
   };
