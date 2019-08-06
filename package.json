@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node-sass -w -o public/assets/css --output-style compressed src/assets/scss/app.scss & http-server public/ -o -c-1 & onchange src/**/*.js src/**/*.html -- npm run build:move-files",
-    "build": "rm -rf public/ npm-run-all build:*",
+    "build": "rm -rf public/ && npm-run-all build:*",
     "build:init-public": "mkdir -p public public/assets/ public/assets/js public/assets/css",
     "build:move-files": "cp src/index.html public/ && cp src/assets/js/app.js public/assets/js/",
     "build:sass": "node-sass -o public/assets/css --output-style compressed src/assets/scss/app.scss",
